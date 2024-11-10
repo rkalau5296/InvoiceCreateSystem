@@ -1,0 +1,16 @@
+# Pliki binarne i katalogi
+bin/
+obj/
+
+# Pliki tymczasowe
+*.log
+*.tmp
+
+# Pliki konfiguracji IDE
+.vs/
+*.suo
+*.user
+
+# Pliki systemu operacyjnego
+.DS_Store
+Thumbs.db
