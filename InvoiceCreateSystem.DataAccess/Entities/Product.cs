@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceCreateSystem.DataAccess.Entities
 {
-    public class Product
+    public class Product : EntityBase
     {
         public Product()
         {
             InvoicePositions = new Collection<InvoicePosition>();
         }
-        public int Id { get; set; }
+        
         [Required]
         [Display(Name = "Nazwa")]
+        [MaxLength(255)]
         public string Name { get; set; }
         public decimal Value { get; set; }
         [Required]

@@ -23,8 +23,4 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\InvoiceCreateSystem\InvoiceCreateSystem.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -4,19 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceCreateSystem.DataAccess.Entities
 {
-    public class Client
+    public class Client : EntityBase
     {
         public Client()
         {
             Invoices = new Collection<Invoice>();
         }
-
-        public int Id { get; set; }
+                
         [Required]
         [Display(Name = "Nazwa")]
+        [MaxLength(255)]
         public string Name { get; set; }
         public int AddressId { get; set; }
         [Required]
+        [MaxLength(255)]
         public string Email { get; set; }
         [Required]
         [ForeignKey("User")]

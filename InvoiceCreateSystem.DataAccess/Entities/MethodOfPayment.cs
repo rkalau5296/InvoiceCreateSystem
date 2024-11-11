@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InvoiceCreateSystem.DataAccess.Entities
 {
-    public class MethodOfPayment
+    public class MethodOfPayment : EntityBase
     {
         public MethodOfPayment()
         {
             Invoices = new Collection<Invoice>();
         }
-        public int Id { get; set; }
+       
         [Required]
+        [MaxLength(255)]
         public string Name { get; set; }
         [Required]
         [ForeignKey("User")]
