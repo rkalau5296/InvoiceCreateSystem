@@ -11,7 +11,7 @@ namespace InvoiceCreateSystem.DataAccess.Entities
             Invoices = new Collection<Invoice>();
         }
        
-        [Required]
+        
         [MaxLength(255)]
         public string Name { get; set; }
         [Required]
