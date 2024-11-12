@@ -16,7 +16,8 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         public string Name { get; set; }
         [Required]
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
     }
 }

@@ -28,9 +28,10 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         public int ClientId { get; set; }
         [Required]
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public MethodOfPayment MethodOfPayment { get; set; }
         public Client Client { get; set; }
+        public User User { get; set; }
         public ICollection<InvoicePosition> InvoicePositions { get; set; }
     }
 }
