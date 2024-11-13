@@ -10,22 +10,19 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         {
             Invoices = new Collection<Invoice>();
         }
-                
+
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Nazwa")]
-        [MaxLength(255)]
         public string Name { get; set; }
         public int AddressId { get; set; }
         [Required]
-        [MaxLength(255)]
         public string Email { get; set; }
         [Required]
         [ForeignKey("User")]
         public int UserId { get; set; }
-        public int InvoiceId { get; set; }
         public Address Address { get; set; }
-        public User User { get; set; }
-        public Invoice Invoice { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
+        public User User { get; set; }
     }
 }

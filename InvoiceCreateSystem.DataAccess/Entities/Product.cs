@@ -18,12 +18,8 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         public decimal Value { get; set; }
         [Required]
         [ForeignKey("User")]
-        public int UserId { get; set; }
-        [Required]
-        [ForeignKey("Invoice")]
-        public int InvoiceId { get; set; }
-        public User User { get; set; }
-        public Invoice Invoice { get; set; }
+        public int UserId { get; set; }      
+        public User User { get; set; }        
         public ICollection<InvoicePosition> InvoicePositions { get; set; }
     }
 }

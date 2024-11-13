@@ -27,6 +27,5 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         [MaxLength(255)]
         public string PostalCode { get; set; }
         public ICollection<Client> Clients { get; set; }
-
     }
 }

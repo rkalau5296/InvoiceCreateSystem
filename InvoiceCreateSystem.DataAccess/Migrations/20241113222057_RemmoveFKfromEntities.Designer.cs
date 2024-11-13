@@ -4,6 +4,7 @@ using InvoiceCreateSystem.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceCreateSystem.DataAccess.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    partial class InvoiceContextModelSnapshot : ModelSnapshot
+    [Migration("20241113222057_RemmoveFKfromEntities")]
+    partial class RemmoveFKfromEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,11 +71,13 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -83,7 +88,7 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("InvoiceCreateSystem.DataAccess.Entities.Invoice", b =>
@@ -160,7 +165,7 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("InvoicePositions", (string)null);
+                    b.ToTable("InvoicePositions");
                 });
 
             modelBuilder.Entity("InvoiceCreateSystem.DataAccess.Entities.MethodOfPayment", b =>
@@ -182,7 +187,7 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MethodsOfPayment", (string)null);
+                    b.ToTable("MethodOfPayments");
                 });
 
             modelBuilder.Entity("InvoiceCreateSystem.DataAccess.Entities.Product", b =>

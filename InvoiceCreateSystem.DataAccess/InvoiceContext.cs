@@ -14,8 +14,7 @@ namespace InvoiceCreateSystem.DataAccess
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // User - one-to-many relationships
+        {            
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Products)
                 .WithOne(p => p.User)
@@ -39,42 +38,11 @@ namespace InvoiceCreateSystem.DataAccess
                 .WithOne(m => m.User)
                 .HasForeignKey(m => m.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            // Client - one-to-many relationships with Invoice
-            modelBuilder.Entity<Client>()
-                .HasMany(c => c.Invoices)
-                .WithOne(i => i.Client)
-                .HasForeignKey(i => i.ClientId)
-                .OnDelete(DeleteBehavior.NoAction);
+            base.OnModelCreating(modelBuilder);
             
-            // MethodOfPayment - one-to-many relationships with Invoice
-            modelBuilder.Entity<MethodOfPayment>()
-                .HasMany(m => m.Invoices)
-                .WithOne(i => i.MethodOfPayment)
-                .HasForeignKey(i => i.MethodOfPaymentId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // InvoicePosition - one-to-many relationship with Invoice
-            modelBuilder.Entity<InvoicePosition>()
-                .HasOne(ip => ip.Invoice)
-                .WithMany(i => i.InvoicePositions)
-                .HasForeignKey(ip => ip.InvoiceId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // InvoicePosition - one-to-many relationship with Product
-            modelBuilder.Entity<InvoicePosition>()
-                .HasOne(ip => ip.Product)
-                .WithMany(p => p.InvoicePositions)
-                .HasForeignKey(ip => ip.ProductId)
-                .OnDelete(DeleteBehavior.NoAction); // Zmień na NoAction, aby uniknąć cykli
-
-            // Configurations for other entities
             modelBuilder.Entity<Client>().ToTable("Clients");
             modelBuilder.Entity<MethodOfPayment>().ToTable("MethodsOfPayment");
             modelBuilder.Entity<InvoicePosition>().ToTable("InvoicePositions");
         }
-
-
-
     }
 }

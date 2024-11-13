@@ -9,8 +9,7 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         public MethodOfPayment()
         {
             Invoices = new Collection<Invoice>();
-        }
-       
+        }       
         
         [MaxLength(255)]
         public string Name { get; set; }
