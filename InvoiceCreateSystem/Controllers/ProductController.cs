@@ -1,26 +1,27 @@
-﻿using InvoiceCreateSystem.DataAccess;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
+using InvoiceCreateSystem.DataAccess;
 using InvoiceCreateSystem.DataAccess.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvoiceCreateSystem.Controllers
 {
     [ApiController]
-    [Route("(controller)")]
+    [Route("(Product)")]
     public class ProductController : ControllerBase
     {
-        private readonly IRepository<Product> productRepository;
-        public ProductController(IRepository<Product> productRepository)
+        private readonly IMediator mediator;
+        public ProductController(IMediator mediator)
         {
-            this.productRepository = productRepository;
+            this.mediator = mediator;
         }
-
+       
         [HttpGet]
         [Route("")]
-        public IEnumerable<Product> GetAllProducts() => productRepository.GetAll();
-
-        [HttpGet]
-        [Route("productId")]
-        public Product GetProductById(int productId) => productRepository.GetById(productId);
-
+        public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsRequest request)
+        {
+            var response = await mediator.Send(request);
+            return Ok(response);
+        }
     }
 }

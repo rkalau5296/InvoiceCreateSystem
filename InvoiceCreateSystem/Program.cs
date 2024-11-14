@@ -1,10 +1,10 @@
+using InvoiceCreateSystem.ApplicationServices.API.Domain;
 using InvoiceCreateSystem.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ResponseBase<>).Assembly));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddDbContext<InvoiceContext>(opt 
     => opt.UseSqlServer(builder.Configuration.GetConnectionString("InvoiceDatabaseConnection")));
