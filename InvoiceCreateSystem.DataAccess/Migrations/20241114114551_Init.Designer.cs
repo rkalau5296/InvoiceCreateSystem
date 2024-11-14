@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvoiceCreateSystem.DataAccess.Migrations
 {
     [DbContext(typeof(InvoiceContext))]
-    [Migration("20241112140311_Init")]
+    [Migration("20241114114551_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -71,19 +71,11 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceId1")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -91,8 +83,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("InvoiceId1");
 
                     b.HasIndex("UserId");
 
@@ -111,7 +101,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comments")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -186,7 +175,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -208,9 +196,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -223,8 +208,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("UserId");
 
@@ -267,12 +250,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("InvoiceCreateSystem.DataAccess.Entities.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.User", "User")
                         .WithMany("Clients")
                         .HasForeignKey("UserId")
@@ -280,8 +257,6 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
-
-                    b.Navigation("Invoice");
 
                     b.Navigation("User");
                 });
@@ -291,13 +266,13 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.Client", "Client")
                         .WithMany("Invoices")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.MethodOfPayment", "MethodOfPayment")
                         .WithMany("Invoices")
                         .HasForeignKey("MethodOfPaymentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.User", "User")
@@ -318,13 +293,13 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.Invoice", "Invoice")
                         .WithMany("InvoicePositions")
                         .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.Product", "Product")
                         .WithMany("InvoicePositions")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
@@ -345,19 +320,11 @@ namespace InvoiceCreateSystem.DataAccess.Migrations
 
             modelBuilder.Entity("InvoiceCreateSystem.DataAccess.Entities.Product", b =>
                 {
-                    b.HasOne("InvoiceCreateSystem.DataAccess.Entities.Invoice", "Invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("InvoiceCreateSystem.DataAccess.Entities.User", "User")
                         .WithMany("Products")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.Navigation("Invoice");
 
                     b.Navigation("User");
                 });

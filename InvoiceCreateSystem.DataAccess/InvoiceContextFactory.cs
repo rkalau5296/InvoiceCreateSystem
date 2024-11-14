@@ -8,7 +8,7 @@ namespace InvoiceCreateSystem.DataAccess
         public InvoiceContext CreateDbContext(string[] args)
         {
             var optionBuilder = new DbContextOptionsBuilder<InvoiceContext>();
-            optionBuilder.UseSqlServer("Data Source=DESKTOP-6QU5KCP;Initial Catalog=InvoiceCreateSystem;Integrated Security=True;Trust Server Certificate=True");
+            optionBuilder.UseSqlServer("Data Source=LAPTOP-ITT5H8GO\\SQLEXPRESS;Initial Catalog=InvoiceCreateSystem;Integrated Security=True;Trust Server Certificate=True");
             return new InvoiceContext(optionBuilder.Options);
         }
     }

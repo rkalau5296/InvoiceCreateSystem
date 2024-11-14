@@ -9,9 +9,7 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         public Client()
         {
             Invoices = new Collection<Invoice>();
-        }
-
-        public int Id { get; set; }
+        }        
         [Required]
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
