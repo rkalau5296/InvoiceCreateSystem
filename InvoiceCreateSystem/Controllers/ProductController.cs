@@ -1,6 +1,4 @@
 ﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
-using InvoiceCreateSystem.DataAccess;
-using InvoiceCreateSystem.DataAccess.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +18,17 @@ namespace InvoiceCreateSystem.Controllers
         [Route("")]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsRequest request)
         {
-            var response = await mediator.Send(request);
+            GetProductsResponse response = await mediator.Send(request);
+            return Ok(response);
+        }
+
+        [HttpGet]
+        [Route("productId")]
+        public async Task<IActionResult> GetProductById(int productId)
+        {
+            GetProductByIdRequest request = new (productId);
+            GetProductByIdResponse response = await mediator.Send(request);           
+
             return Ok(response);
         }
     }

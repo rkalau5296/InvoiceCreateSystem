@@ -2,11 +2,6 @@
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
 {
@@ -19,15 +14,15 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
         }
         public Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
         {
-            var products = productRepository.GetAll();
+            IEnumerable<DataAccess.Entities.Product> products = productRepository.GetAll();
 
-            var domainProducts = products.Select(x => new Product()
+            IEnumerable<Product> domainProducts = products.Select(x => new Product()
             {
                 Id = x.Id,
                 Name = x.Name,
                 Value = x.Value
             });
-            var response = new GetProductsResponse()
+            GetProductsResponse response = new()
             {
                 Data = domainProducts.ToList(),
             };

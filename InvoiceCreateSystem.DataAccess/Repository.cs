@@ -29,10 +29,7 @@ namespace InvoiceCreateSystem.DataAccess
 
         public void Insert(T entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             entities.Add(entity);
             context.SaveChanges();
@@ -40,10 +37,7 @@ namespace InvoiceCreateSystem.DataAccess
 
         public void Update(T entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException("entity");
-            }
+            ArgumentNullException.ThrowIfNull(entity);
 
             entities.Update(entity);
             context.SaveChanges();
