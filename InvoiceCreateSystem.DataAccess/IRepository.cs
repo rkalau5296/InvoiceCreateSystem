@@ -4,10 +4,10 @@ namespace InvoiceCreateSystem.DataAccess
 {
     public interface IRepository<T> where T: EntityBase
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Insert(T Entity);
-        void Update(T Entity);
-        void Delete(int id);
+        Task<List<T>> GetAll();
+        Task<T> GetById(int id);
+        Task Insert(T Entity);
+        Task Update(T Entity);
+        Task Delete(int id);
     }
 }
