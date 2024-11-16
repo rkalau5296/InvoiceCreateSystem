@@ -16,17 +16,17 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
             this.productRepository = productRepository;
             this.mapper = mapper;
         }
-        public Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
+        public async Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
         {
-            IEnumerable<DataAccess.Entities.Product> products = productRepository.GetAll();
-            IEnumerable<Product> mappedProduct = this.mapper.Map<List<Product>>(products);
+            List<DataAccess.Entities.Product> products = await this.productRepository.GetAll();
+            IEnumerable<Domain.Models.Product> mappedProduct = this.mapper.Map<List<Domain.Models.Product>>(products);
             
             GetProductsResponse response = new()
             {
                 Data = mappedProduct.ToList(),
             };
 
-            return Task.FromResult(response);
+            return response;
         }
     }
 }
