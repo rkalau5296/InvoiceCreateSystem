@@ -1,9 +1,11 @@
 using InvoiceCreateSystem.ApplicationServices.API.Domain;
+using InvoiceCreateSystem.ApplicationServices.Mappings;
 using InvoiceCreateSystem.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(typeof(ProductsProfile).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ResponseBase<>).Assembly));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddDbContext<InvoiceContext>(opt 

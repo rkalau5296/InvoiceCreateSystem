@@ -10,14 +10,8 @@ using System.Threading.Tasks;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
 {
-    public class GetProductByIdHandler : IRequestHandler<GetProductByIdRequest, GetProductByIdResponse>
+    public class GetProductByIdHandler(IRepository<DataAccess.Entities.Product> productRepository) : IRequestHandler<GetProductByIdRequest, GetProductByIdResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Product> productRepository;
-        public GetProductByIdHandler(IRepository<DataAccess.Entities.Product> productRepository)
-        {
-            this.productRepository = productRepository;
-        }
-
         public Task<GetProductByIdResponse> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
         {
             DataAccess.Entities.Product product = productRepository.GetById(request.Id);

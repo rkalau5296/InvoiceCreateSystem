@@ -6,14 +6,8 @@ namespace InvoiceCreateSystem.Controllers
 {
     [ApiController]
     [Route("(Product)")]
-    public class ProductController : ControllerBase
+    public class ProductController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator mediator;
-        public ProductController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
-       
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetAllProducts([FromQuery] GetProductsRequest request)
