@@ -7,13 +7,11 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
 {
     public class PostProductHandler : IRequestHandler<PostProductRequest, PostProductResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Product> productRepository;
-        private readonly IMapper mapper;
+        private readonly IRepository<DataAccess.Entities.Product> productRepository;        
 
         public PostProductHandler(IRepository<DataAccess.Entities.Product> productRepository, IMapper mapper)
         {
-            this.productRepository = productRepository;
-            this.mapper = mapper;
+            this.productRepository = productRepository;            
         }
 
         public async Task<PostProductResponse> Handle(PostProductRequest request, CancellationToken cancellationToken)

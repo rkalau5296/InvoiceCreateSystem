@@ -36,5 +36,15 @@ namespace InvoiceCreateSystem.Controllers
 
             return Ok(response);
         }
+
+        [HttpPut]
+        [Route("update/id")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] DataAccess.Entities.Product product)
+        {
+            PutProductRequest updatedProduct = new(id, product);
+            PutProductResponse response = await mediator.Send(updatedProduct);
+
+            return Ok(response);
+        }
     }
 }
