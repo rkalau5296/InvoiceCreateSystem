@@ -1,5 +1,4 @@
-﻿
-using InvoiceCreateSystem.DataAccess.Entities;
+﻿using InvoiceCreateSystem.DataAccess.Entities;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Domain
