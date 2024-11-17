@@ -1,4 +1,6 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
+﻿
+
+using InvoiceCreateSystem.DataAccess.Entities;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Domain
 {

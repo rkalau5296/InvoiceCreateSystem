@@ -1,5 +1,4 @@
 ﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +42,16 @@ namespace InvoiceCreateSystem.Controllers
         {
             PutProductRequest updatedProduct = new(id, product);
             PutProductResponse response = await mediator.Send(updatedProduct);
+
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("id")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            DeleteProductRequest request = new(id);
+            var response = await mediator.Send(request);            
 
             return Ok(response);
         }

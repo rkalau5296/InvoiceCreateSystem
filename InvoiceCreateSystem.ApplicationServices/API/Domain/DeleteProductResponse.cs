@@ -2,7 +2,7 @@
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Domain
 {
-    public class GetProductByIdResponse : ResponseBase<Product>
+    public class DeleteProductResponse : ResponseBase<Product>
     {
     }
 }

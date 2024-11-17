@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
 
