@@ -29,7 +29,7 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpPost]
         [Route("insert")]
-        public async Task<IActionResult> PostClient([FromBody] Client client)
+        public async Task<IActionResult> PostClient([FromBody] DataAccess.Entities.Client client)
         {
             PostClientRequest insertedClient = new(client);
             PostClientResponse response = await mediator.Send(insertedClient);
@@ -39,7 +39,7 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpPut]
         [Route("update/id")]
-        public async Task<IActionResult> UpdateClient(int id, [FromBody] Client client)
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] DataAccess.Entities.Client client)
         {
             PutClientRequest updatedProduct = new(id, client);
             PutClientResponse response = await mediator.Send(updatedProduct);

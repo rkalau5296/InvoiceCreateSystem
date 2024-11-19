@@ -2,9 +2,9 @@
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Domain.Client
 {
-    using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
-    public class PostClientRequest(Client client) : IRequest<PostClientResponse>
+    
+    public class PostClientRequest(DataAccess.Entities.Client client) : IRequest<PostClientResponse>
     {
-        public Client Client { get; } = client;
+        public DataAccess.Entities.Client Client { get; } = client;
     }
 }
