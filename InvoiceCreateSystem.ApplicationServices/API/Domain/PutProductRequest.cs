@@ -3,14 +3,9 @@ using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Domain
 {
-    public class PutProductRequest : IRequest<PutProductResponse>
+    public class PutProductRequest(int id, Product product) : IRequest<PutProductResponse>
     {
-        public Product Product { get; }
-        public int Id { get; set; }
-        public PutProductRequest(int id, Product product)
-        {
-            this.Id = id;
-            this.Product = product;
-        }
+        public Product Product { get; } = product;
+        public int Id { get; set; } = id;
     }
 }
