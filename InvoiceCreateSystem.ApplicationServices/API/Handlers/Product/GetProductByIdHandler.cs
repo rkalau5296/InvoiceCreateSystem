@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using InvoiceCreateSystem.ApplicationServices.API.Domain;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
+namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
 {
     public class GetProductByIdHandler : IRequestHandler<GetProductByIdRequest, GetProductByIdResponse>
     {
@@ -17,9 +17,9 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
 
         public async Task<GetProductByIdResponse> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.Product product = await this.productRepository.GetById(request.Id);
+            DataAccess.Entities.Product product = await productRepository.GetById(request.Id);
 
-            Domain.Models.Product mappedProduct = this.mapper.Map<Domain.Models.Product>(product);
+            Domain.Models.Product mappedProduct = mapper.Map<Domain.Models.Product>(product);
 
             GetProductByIdResponse response = new()
             {

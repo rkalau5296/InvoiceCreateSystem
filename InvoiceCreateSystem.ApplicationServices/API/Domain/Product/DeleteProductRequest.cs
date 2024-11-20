@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Domain
+namespace InvoiceCreateSystem.ApplicationServices.API.Domain.Product
 {
     public class DeleteProductRequest(int id) : IRequest<DeleteProductResponse>
     {

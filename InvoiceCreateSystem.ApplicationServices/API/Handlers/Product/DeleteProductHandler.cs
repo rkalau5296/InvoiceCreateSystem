@@ -1,8 +1,8 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
+namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
 {
     public class DeleteProductHandler : IRequestHandler<DeleteProductRequest, DeleteProductResponse>
     {
@@ -14,7 +14,7 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers
         }
 
         public async Task<DeleteProductResponse> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
-        {            
+        {
             await productRepository.Delete(request.Id);
             return new DeleteProductResponse();
         }

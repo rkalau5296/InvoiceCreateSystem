@@ -1,8 +1,8 @@
-﻿using InvoiceCreateSystem.DataAccess.Entities;
-using MediatR;
+﻿using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Domain
+namespace InvoiceCreateSystem.ApplicationServices.API.Domain.Product
 {
+    using InvoiceCreateSystem.DataAccess.Entities;
     public class PutProductRequest(int id, Product product) : IRequest<PutProductResponse>
     {
         public Product Product { get; } = product;

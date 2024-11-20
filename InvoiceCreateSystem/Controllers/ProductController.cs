@@ -1,4 +1,4 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
