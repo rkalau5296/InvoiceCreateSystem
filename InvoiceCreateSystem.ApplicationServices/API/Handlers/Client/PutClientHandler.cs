@@ -21,13 +21,14 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
 
         public async Task<PutClientResponse> Handle(PutClientRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.Client product = await this.clientRepository.GetById(request.Id);
-            product.Name = request.Client.Name;
-            product.AddressId = request.Client.AddressId;
-            product.Email = request.Client.Email;
-            product.UserId = request.Client.UserId;
+            DataAccess.Entities.Client client = await this.clientRepository.GetById(request.Id);
 
-            await clientRepository.Update(product);
+            client.Name = request.Client.Name;
+            client.AddressId = request.Client.AddressId;
+            client.Email = request.Client.Email;
+            client.UserId = request.Client.UserId;
+
+            await clientRepository.Update(client);
             return new PutClientResponse();
         }
     }

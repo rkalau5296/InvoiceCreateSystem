@@ -41,8 +41,8 @@ namespace InvoiceCreateSystem.Controllers
         [Route("update/id")]
         public async Task<IActionResult> UpdateClient(int id, [FromBody] DataAccess.Entities.Client client)
         {
-            PutClientRequest updatedProduct = new(id, client);
-            PutClientResponse response = await mediator.Send(updatedProduct);
+            PutClientRequest updatedClient = new(id, client);
+            PutClientResponse response = await mediator.Send(updatedClient);
 
             return Ok(response);
         }
