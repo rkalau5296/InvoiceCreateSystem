@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
 
-
 namespace InvoiceCreateSystem.ApplicationServices.Mappings
 {
     public class AddressProfile : Profile

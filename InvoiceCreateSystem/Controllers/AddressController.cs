@@ -1,5 +1,4 @@
 ﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

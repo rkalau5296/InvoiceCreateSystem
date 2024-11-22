@@ -1,5 +1,4 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

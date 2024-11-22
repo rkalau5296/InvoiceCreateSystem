@@ -1,14 +1,7 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
-using InvoiceCreateSystem.DataAccess;
+﻿using InvoiceCreateSystem.DataAccess;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
+namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition
 {
     using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
     using InvoiceCreateSystem.DataAccess.Entities;

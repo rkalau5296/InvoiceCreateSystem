@@ -1,13 +1,6 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address
 {
