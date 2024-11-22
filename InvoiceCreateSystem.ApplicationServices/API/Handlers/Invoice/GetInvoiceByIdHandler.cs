@@ -3,7 +3,7 @@ using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
+namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
 {
     public class GetInvoiceByIdHandler : IRequestHandler<GetInvoiceByIdRequest, GetInvoiceByIdResponse>
     {
@@ -17,12 +17,12 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
         }
         public async Task<GetInvoiceByIdResponse> Handle(GetInvoiceByIdRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.Invoice client = await this.invoiceRepository.GetById(request.Id);
-            Domain.Models.Invoice mappedClient = mapper.Map<Domain.Models.Invoice>(client);
+            DataAccess.Entities.Invoice invoice = await this.invoiceRepository.GetById(request.Id);
+            Domain.Models.Invoice mappedInvoice = mapper.Map<Domain.Models.Invoice>(invoice);
 
             GetInvoiceByIdResponse response = new()
             {
-                Data = mappedClient,
+                Data = mappedInvoice,
             };
 
             return response;

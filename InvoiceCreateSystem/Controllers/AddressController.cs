@@ -10,7 +10,7 @@ namespace InvoiceCreateSystem.Controllers
     {
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetAllClients([FromQuery] GetAddressesRequest request)
+        public async Task<IActionResult> GetAllAddresses([FromQuery] GetAddressesRequest request)
         {
             GetAddressesResponse response = await mediator.Send(request);
             return Ok(response);
@@ -18,9 +18,9 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpGet]
         [Route("addressId")]
-        public async Task<IActionResult> GetClientById(int clientId)
+        public async Task<IActionResult> GetAddressById(int addressId)
         {
-            GetAddressByIdRequest request = new(clientId);
+            GetAddressByIdRequest request = new(addressId);
             GetAddressByIdResponse response = await mediator.Send(request);
 
             return Ok(response);
@@ -28,7 +28,7 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpPost]
         [Route("insert")]
-        public async Task<IActionResult> PostClient([FromBody] DataAccess.Entities.Address address)
+        public async Task<IActionResult> PostAddress([FromBody] DataAccess.Entities.Address address)
         {
             PostAddressRequest insertedAddress = new(address);
             PostAddressResponse response = await mediator.Send(insertedAddress);
@@ -38,7 +38,7 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpPut]
         [Route("update/id")]
-        public async Task<IActionResult> UpdateClient(int id, [FromBody] DataAccess.Entities.Address address)
+        public async Task<IActionResult> UpdateAddress(int id, [FromBody] DataAccess.Entities.Address address)
         {
             PutAddressRequest updatedAddress = new(id, address);
             PutAddressResponse response = await mediator.Send(updatedAddress);
@@ -48,7 +48,7 @@ namespace InvoiceCreateSystem.Controllers
 
         [HttpDelete]
         [Route("id")]
-        public async Task<IActionResult> DeleteClient(int id)
+        public async Task<IActionResult> DeleteAddress(int id)
         {
             DeleteAddressRequest request = new(id);
             DeleteAddressResponse response = await mediator.Send(request);

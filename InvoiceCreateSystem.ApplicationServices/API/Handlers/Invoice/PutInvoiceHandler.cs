@@ -2,7 +2,7 @@
 using InvoiceCreateSystem.DataAccess;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
+namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
 {
     public class PutInvoiceHandler : IRequestHandler<PutInvoiceRequest, PutInvoiceResponse>
     {
