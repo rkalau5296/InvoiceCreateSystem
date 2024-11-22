@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace InvoiceCreateSystem.Controllers
 {
     [ApiController]
-    [Route("(Address)")]
+    [Route("(Invoice)")]
     public class InvoiceController(IMediator mediator) : Controller
     {
         [HttpGet]
