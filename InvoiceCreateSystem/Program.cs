@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<IQueryExecutor, QueryExecutor>();
 builder.Services.AddAutoMapper(typeof(ProductsProfile).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ResponseBase<>).Assembly));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
