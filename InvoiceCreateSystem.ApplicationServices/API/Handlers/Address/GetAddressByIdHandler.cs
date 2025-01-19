@@ -1,23 +1,25 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address
 {
     public class GetAddressByIdHandler : IRequestHandler<GetAddressByIdRequest, GetAddressByIdResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Address> addressRepository;
+        private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetAddressByIdHandler(IRepository<DataAccess.Entities.Address> addressRepository, IMapper mapper)
+        public GetAddressByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
-            this.addressRepository = addressRepository;
+            this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
         public async Task<GetAddressByIdResponse> Handle(GetAddressByIdRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.Address address = await this.addressRepository.GetById(request.Id);
+            GetAddressByIdQuery query = new(request.Id);
+            DataAccess.Entities.Address address = await this.queryExecutor.Execute(query);
             Domain.Models.Address mappedClient = mapper.Map<Domain.Models.Address>(address);
 
             GetAddressByIdResponse response = new()

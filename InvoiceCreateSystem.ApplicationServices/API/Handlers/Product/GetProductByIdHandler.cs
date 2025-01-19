@@ -18,9 +18,9 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
 
         public async Task<GetProductByIdResponse> Handle(GetProductByIdRequest request, CancellationToken cancellationToken)
         {
-            var query = new GetProductByIdQuery(request.Id);
-            
-            var product = await this.queryExecutor.Execute(query);
+            GetProductByIdQuery query = new(request.Id);
+
+            DataAccess.Entities.Product product = await this.queryExecutor.Execute(query);
 
             Domain.Models.Product mappedProduct = mapper.Map<Domain.Models.Product>(product);
 
