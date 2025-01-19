@@ -20,7 +20,7 @@ namespace InvoiceCreateSystem.Controllers
         [Route("productId")]
         public async Task<IActionResult> GetProductById(int productId)
         {
-            GetProductByIdRequest request = new (productId);
+            GetProductByIdRequest request = new(productId);
             GetProductByIdResponse response = await mediator.Send(request);           
 
             return Ok(response);

@@ -3,12 +3,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InvoiceCreateSystem.DataAccess.CQRS.Queries
 {
-    public class GetProductQuery : QueryBase<Product>
+    public class GetProductByIdQuery : QueryBase<Product>
     {
         public int Id { get; set; }
+        public GetProductByIdQuery(int id)
+        {
+            this.Id = id;
+        }
         public override async Task<Product> Execute(InvoiceContext context)
         {
-            return await context.Products.FirstOrDefaultAsync(book => book.Id == this.Id);
+            return await context.Products.FirstOrDefaultAsync(product => product.Id == this.Id);            
         }
     }
 }
