@@ -12,7 +12,7 @@ namespace InvoiceCreateSystem.DataAccess.CQRS.Queries
         }
         public override async Task<Product> Execute(InvoiceContext context)
         {
-            return await context.Products.FirstOrDefaultAsync(product => product.Id == Id);            
+            return await context.Products.FirstOrDefaultAsync(p => p.Id == Id);            
         }
     }
 }

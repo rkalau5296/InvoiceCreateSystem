@@ -1,23 +1,25 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
 {
     public class GetInvoicesHandler : IRequestHandler<GetInvoicesRequest, GetInvoicesResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Invoice> invoiceRepository;
+        private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetInvoicesHandler(IRepository<DataAccess.Entities.Invoice> invoiceRepository, IMapper mapper)
+        public GetInvoicesHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
-            this.invoiceRepository = invoiceRepository;
+            this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
         public async Task<GetInvoicesResponse> Handle(GetInvoicesRequest request, CancellationToken cancellationToken)
         {
-            List<DataAccess.Entities.Invoice> invoice = await this.invoiceRepository.GetAll();
+            GetInvoicesQuery query = new();
+            List<DataAccess.Entities.Invoice> invoice = await this.queryExecutor.Execute(query);
             IEnumerable<Domain.Models.Invoice> mappedInvoice = this.mapper.Map<List<Domain.Models.Invoice>>(invoice);
 
             GetInvoicesResponse response = new()

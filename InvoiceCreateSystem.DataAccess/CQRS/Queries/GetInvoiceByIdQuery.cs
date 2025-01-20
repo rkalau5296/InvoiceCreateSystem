@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace InvoiceCreateSystem.DataAccess.CQRS.Queries
 {
-    public class GetAddressByIdQuery : QueryBase<Address>
+    public class GetInvoiceByIdQuery : QueryBase<Invoice>
     {
         public int Id { get; set; }
-        public GetAddressByIdQuery(int id)
+        public GetInvoiceByIdQuery(int id)
         {
             Id = id;
         }
-        public override async Task<Address> Execute(InvoiceContext context)
+        public override async Task<Invoice> Execute(InvoiceContext context)
         {
-            return await context.Addresses.FirstOrDefaultAsync(a => a.Id == Id);
+            return await context.Invoices.FirstOrDefaultAsync(i => i.Id == Id);
         }
     }
 }
