@@ -1,28 +1,30 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition
 {
     public class GetInvoicePositionByIdHandler : IRequestHandler<GetInvoicePositionByIdRequest, GetInvoicePositionByIdResponse>
     {
-        private readonly IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository;
+        private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetInvoicePositionByIdHandler(IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository, IMapper mapper)
+        public GetInvoicePositionByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
-            this.invoicePositionRepository = invoicePositionRepository;
+            this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
         public async Task<GetInvoicePositionByIdResponse> Handle(GetInvoicePositionByIdRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.InvoicePosition client = await this.invoicePositionRepository.GetById(request.Id);
-            Domain.Models.InvoicePosition mappedClient = mapper.Map<Domain.Models.InvoicePosition>(client);
+            GetInvoicePositionByIdQuery query = new(request.Id);
+            DataAccess.Entities.InvoicePosition invoicePosition = await this.queryExecutor.Execute(query);
+            Domain.Models.InvoicePosition mappediInvoicePosition = mapper.Map<Domain.Models.InvoicePosition>(invoicePosition);
 
             GetInvoicePositionByIdResponse response = new()
             {
-                Data = mappedClient,
+                Data = mappediInvoicePosition,
             };
 
             return response;

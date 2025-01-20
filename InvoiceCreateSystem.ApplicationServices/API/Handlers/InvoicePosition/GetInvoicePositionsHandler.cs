@@ -1,28 +1,30 @@
 ﻿using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition
 {
     public class GetInvoicePositionsHandler : IRequestHandler<GetInvoicePositionsRequest, GetInvoicePositionsResponse>
     {
-        private readonly IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository;
+        private readonly IQueryExecutor queryExecutor;
         private readonly IMapper mapper;
 
-        public GetInvoicePositionsHandler(IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository, IMapper mapper)
+        public GetInvoicePositionsHandler(IQueryExecutor queryExecutor, IMapper mapper)
         {
-            this.invoicePositionRepository = invoicePositionRepository;
+            this.queryExecutor = queryExecutor;
             this.mapper = mapper;
         }
         public async Task<GetInvoicePositionsResponse> Handle(GetInvoicePositionsRequest request, CancellationToken cancellationToken)
         {
-            List<DataAccess.Entities.InvoicePosition> clients = await this.invoicePositionRepository.GetAll();
-            IEnumerable<Domain.Models.InvoicePosition> mappedClient = this.mapper.Map<List<Domain.Models.InvoicePosition>>(clients);
+            GetInvoicePositionsQuery query = new();
+            List<DataAccess.Entities.InvoicePosition> invoicePositions = await this.queryExecutor.Execute(query);
+            IEnumerable<Domain.Models.InvoicePosition> mappedInvoicePositions = this.mapper.Map<List<Domain.Models.InvoicePosition>>(invoicePositions);
 
             GetInvoicePositionsResponse response = new()
             {
-                Data = mappedClient.ToList(),
+                Data = mappedInvoicePositions.ToList(),
             };
 
             return response;
