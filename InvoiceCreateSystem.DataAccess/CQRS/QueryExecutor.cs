@@ -1,6 +1,6 @@
 ﻿using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 
-namespace InvoiceCreateSystem.DataAccess
+namespace InvoiceCreateSystem.DataAccess.CQRS
 {
     public class QueryExecutor : IQueryExecutor
     {
@@ -12,7 +12,7 @@ namespace InvoiceCreateSystem.DataAccess
         }
         public Task<TResult> Execute<TResult>(QueryBase<TResult> query)
         {
-            return query.Execute(this.invoiceContext);
+            return query.Execute(invoiceContext);
         }
     }
 }
