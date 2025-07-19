@@ -2,11 +2,11 @@
 
 namespace InvoiceCreateSystem.DataAccess.CQRS.Commands
 {
-    public class PostAddressCommand : CommandBase<Address, Address>
+    public class PostClientCommand : CommandBase<Client, Client>
     {
-        public override async Task<Address> Execute(InvoiceContext context)
+        public override async Task<Client> Execute(InvoiceContext context)
         {
-            await context.Addresses.AddAsync(this.Parametr);
+            await context.Clients.AddAsync(this.Parametr);
             await context.SaveChangesAsync();
             return this.Parametr;
         }

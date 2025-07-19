@@ -1,28 +1,30 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
+using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address
+public class PutAddressHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<PutAddressRequest, PutAddressResponse>
 {
-    public class PutAddressHandler : IRequestHandler<PutAddressRequest, PutAddressResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<PutAddressResponse> Handle(PutAddressRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.Address> addressRepository;
+        var address = mapper.Map<DataAccess.Entities.Address>(request.Address);
 
-        public PutAddressHandler(IRepository<DataAccess.Entities.Address> addressRepository)
-        {
-            this.addressRepository = addressRepository;
-        }
+        address.Id= request.Id;
 
-        public async Task<PutAddressResponse> Handle(PutAddressRequest request, CancellationToken cancellationToken)
-        {
-            DataAccess.Entities.Address address = await this.addressRepository.GetById(request.Id);
-            address.Street = request.Address.Street;
-            address.Number = request.Address.Number;
-            address.City = request.Address.City;
-            address.PostalCode = request.Address.PostalCode;
+        var command = new PutAddressCommand { Parametr = address };
+        var updatedAddress = await commandExecutor.Execute(command);
 
-            await addressRepository.Update(address);
-            return new PutAddressResponse();
-        }
+        var domainAddress = mapper.Map<Domain.Models.Address>(updatedAddress);
+
+        return new PutAddressResponse { Data = domainAddress };
     }
 }

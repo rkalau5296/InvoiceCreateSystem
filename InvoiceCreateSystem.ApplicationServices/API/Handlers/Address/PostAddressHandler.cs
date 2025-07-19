@@ -1,24 +1,22 @@
-﻿using InvoiceCreateSystem.DataAccess;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address;
+
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;    
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;    
+public class PostAddressHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PostAddressRequest, PostAddressResponse>
 {
-    using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
-    using InvoiceCreateSystem.DataAccess.Entities;
-    public class PostAddressHandler : IRequestHandler<PostAddressRequest, PostAddressResponse>
-    {
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;
 
-        private readonly IRepository<Address> addressRepository;
-
-        public PostAddressHandler(IRepository<Address> addressRepository)
+    public async Task<PostAddressResponse> Handle(PostAddressRequest request, CancellationToken cancellationToken)
+    {            
+        var command = new PostAddressCommand() { Parametr = request.Address };
+        var addressFromDb = await commandExecutor.Execute(command);
+        return new PostAddressResponse()
         {
-            this.addressRepository = addressRepository;
-        }
-
-        public async Task<PostAddressResponse> Handle(PostAddressRequest request, CancellationToken cancellationToken)
-        {
-            await addressRepository.Insert(request.Address);
-            return new PostAddressResponse();
-        }
+            Data = this.mapper.Map<Domain.Models.Address>(addressFromDb)
+        };
     }
 }

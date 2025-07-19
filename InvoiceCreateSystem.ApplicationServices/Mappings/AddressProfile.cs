@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
 
 namespace InvoiceCreateSystem.ApplicationServices.Mappings
@@ -12,7 +13,7 @@ namespace InvoiceCreateSystem.ApplicationServices.Mappings
                 .ForMember(x => x.City, y => y.MapFrom(z => z.City))
                 .ForMember(x => x.PostalCode, y => y.MapFrom(z => z.PostalCode))
                 .ForMember(x => x.Street, y => y.MapFrom(z => z.Street))
-                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number));
+                .ForMember(x => x.Number, y => y.MapFrom(z => z.Number));            
         }
     }
 }

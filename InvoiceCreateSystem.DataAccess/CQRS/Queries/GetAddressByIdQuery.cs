@@ -1,23 +1,13 @@
-﻿using InvoiceCreateSystem.DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace InvoiceCreateSystem.DataAccess.CQRS.Queries;
 
-namespace InvoiceCreateSystem.DataAccess.CQRS.Queries
+using InvoiceCreateSystem.DataAccess.Entities;
+using Microsoft.EntityFrameworkCore;
+public class GetAddressByIdQuery(int id) : QueryBase<Address>
 {
-    public class GetAddressByIdQuery : QueryBase<Address>
+    public int Id { get; set; } = id;
+
+    public override async Task<Address> Execute(InvoiceContext context)
     {
-        public int Id { get; set; }
-        public GetAddressByIdQuery(int id)
-        {
-            Id = id;
-        }
-        public override async Task<Address> Execute(InvoiceContext context)
-        {
-            return await context.Addresses.FirstOrDefaultAsync(a => a.Id == Id);
-        }
+        return await context.Addresses.FirstOrDefaultAsync(a => a.Id == Id);
     }
 }
