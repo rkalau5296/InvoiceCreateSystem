@@ -1,24 +1,13 @@
-﻿using InvoiceCreateSystem.DataAccess.CQRS.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace InvoiceCreateSystem.DataAccess.CQRS;
 
-namespace InvoiceCreateSystem.DataAccess.CQRS
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
+
+public class CommandExecutor(InvoiceContext context) : ICommandExecutor
 {
-    public class CommandExecutor : ICommandExecutor
+    private readonly InvoiceContext context = context;
+
+    public Task<TResult> Execute<TParameters, TResult>(CommandBase<TParameters, TResult> command)
     {
-        private readonly InvoiceContext context;
-
-        public CommandExecutor(InvoiceContext context)
-        {
-            this.context = context;
-        }
-
-        public Task<TResult> Execute<TParameters, TResult>(CommandBase<TParameters, TResult> command)
-        {
-            return command.Execute(context);
-        }
+        return command.Execute(context);
     }
 }

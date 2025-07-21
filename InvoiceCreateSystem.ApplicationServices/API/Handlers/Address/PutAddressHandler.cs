@@ -9,7 +9,7 @@ using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-public class PutAddressHandler(ICommandExecutor commandExecutor, IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<PutAddressRequest, PutAddressResponse>
+public class PutAddressHandler(ICommandExecutor commandExecutor,  IMapper mapper) : IRequestHandler<PutAddressRequest, PutAddressResponse>
 {
     private readonly ICommandExecutor commandExecutor = commandExecutor;
     private readonly IMapper mapper = mapper;

@@ -1,29 +1,28 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
+public class PutClientHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PutClientRequest, PutClientResponse>
 {
-    public class PutClientHandler : IRequestHandler<PutClientRequest, PutClientResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;    
+
+    public async Task<PutClientResponse> Handle(PutClientRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.Client> clientRepository;
+        var address = mapper.Map<DataAccess.Entities.Client>(request.Client);
 
-        public PutClientHandler(IRepository<DataAccess.Entities.Client> clientRepository)
-        {
-            this.clientRepository = clientRepository;
-        }
+        address.Id = request.Id;
 
-        public async Task<PutClientResponse> Handle(PutClientRequest request, CancellationToken cancellationToken)
-        {
-            DataAccess.Entities.Client client = await this.clientRepository.GetById(request.Id);
+        var command = new PutClientCommand { Parametr = address };
+        var updatedClient = await commandExecutor.Execute(command);
 
-            client.Name = request.Client.Name;
-            client.AddressId = request.Client.AddressId;
-            client.Email = request.Client.Email;
-            client.UserId = request.Client.UserId;
+        var domainClient = mapper.Map<Domain.Models.Client>(updatedClient);
 
-            await clientRepository.Update(client);
-            return new PutClientResponse();
-        }
+        return new PutClientResponse { Data = domainClient };
     }
 }

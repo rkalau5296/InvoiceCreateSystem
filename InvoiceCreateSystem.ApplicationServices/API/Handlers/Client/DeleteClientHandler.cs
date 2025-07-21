@@ -1,21 +1,23 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
+﻿using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client
 {
-    public class DeleteClientHandler : IRequestHandler<DeleteClientRequest, DeleteClientResponse>
+    public class DeleteClientHandler(ICommandExecutor commandExecutor) : IRequestHandler<DeleteClientRequest, DeleteClientResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Client> clientRepository;
-
-        public DeleteClientHandler(IRepository<DataAccess.Entities.Client> clientRepository)
-        {
-            this.clientRepository = clientRepository;
-        }
-
+        private readonly ICommandExecutor commandExecutor = commandExecutor;
+        
         public async Task<DeleteClientResponse> Handle(DeleteClientRequest request, CancellationToken cancellationToken)
         {
-            await clientRepository.Delete(request.Id);
+            var client = new DataAccess.Entities.Client { Id = request.Id };
+
+            var command = new DeleteClientCommand { Parametr = client };
+            await commandExecutor.Execute(command);
             return new DeleteClientResponse();
         }
     }
