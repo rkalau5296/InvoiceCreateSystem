@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace InvoiceCreateSystem.DataAccess.Entities
 {
@@ -7,7 +6,7 @@ namespace InvoiceCreateSystem.DataAccess.Entities
     {
         public Address()
         {
-            Clients = new Collection<Client>();
+            Clients = [];
         }
         
         [Required]

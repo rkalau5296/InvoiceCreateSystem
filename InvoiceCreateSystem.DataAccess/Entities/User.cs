@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace InvoiceCreateSystem.DataAccess.Entities
 {
@@ -7,10 +6,10 @@ namespace InvoiceCreateSystem.DataAccess.Entities
     {
         public User()
         {
-            Invoices = new Collection<Invoice>();
-            Clients = new Collection<Client>();
-            Products = new Collection<Product>();
-            MethodOfPayments = new Collection<MethodOfPayment>();
+            Invoices = [];
+            Clients = [];
+            Products = [];
+            MethodOfPayments = [];
         }
         [Required]
         [Display(Name = "Imię")]

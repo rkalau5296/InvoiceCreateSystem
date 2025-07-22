@@ -1,33 +1,26 @@
-﻿using AutoMapper;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice;
+
+using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
+public class GetInvoiceByIdHandler(IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<GetInvoiceByIdRequest, GetInvoiceByIdResponse>
 {
-    public class GetInvoiceByIdHandler : IRequestHandler<GetInvoiceByIdRequest, GetInvoiceByIdResponse>
+    private readonly IQueryExecutor queryExecutor = queryExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<GetInvoiceByIdResponse> Handle(GetInvoiceByIdRequest request, CancellationToken cancellationToken)
     {
-        private readonly IQueryExecutor queryExecutor;
-        private readonly IMapper mapper;
+        GetInvoiceByIdQuery query = new(request.Id);
+        DataAccess.Entities.Invoice invoice = await this.queryExecutor.Execute(query);
+        Domain.Models.Invoice mappedInvoice = mapper.Map<Domain.Models.Invoice>(invoice);
 
-        public GetInvoiceByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
+        GetInvoiceByIdResponse response = new()
         {
-            this.queryExecutor = queryExecutor;
-            this.mapper = mapper;
-        }
-        public async Task<GetInvoiceByIdResponse> Handle(GetInvoiceByIdRequest request, CancellationToken cancellationToken)
-        {
-            GetInvoiceByIdQuery query = new(request.Id);
-            DataAccess.Entities.Invoice invoice = await this.queryExecutor.Execute(query);
-            Domain.Models.Invoice mappedInvoice = mapper.Map<Domain.Models.Invoice>(invoice);
+            Data = mappedInvoice,
+        };
 
-            GetInvoiceByIdResponse response = new()
-            {
-                Data = mappedInvoice,
-            };
-
-            return response;
-        }
+        return response;
     }
 }

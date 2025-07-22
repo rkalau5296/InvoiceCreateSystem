@@ -2,12 +2,9 @@
 
 using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
-using InvoiceCreateSystem.DataAccess;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Commands;
-using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 public class PutAddressHandler(ICommandExecutor commandExecutor,  IMapper mapper) : IRequestHandler<PutAddressRequest, PutAddressResponse>
 {

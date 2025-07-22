@@ -1,9 +1,7 @@
 ﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Client;
 
 using AutoMapper;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
-using InvoiceCreateSystem.DataAccess;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
@@ -14,11 +12,11 @@ public class PutClientHandler(ICommandExecutor commandExecutor, IMapper mapper) 
 
     public async Task<PutClientResponse> Handle(PutClientRequest request, CancellationToken cancellationToken)
     {
-        var address = mapper.Map<DataAccess.Entities.Client>(request.Client);
+        var client = mapper.Map<DataAccess.Entities.Client>(request.Client);
 
-        address.Id = request.Id;
+        client.Id = request.Id;
 
-        var command = new PutClientCommand { Parametr = address };
+        var command = new PutClientCommand { Parametr = client };
         var updatedClient = await commandExecutor.Execute(command);
 
         var domainClient = mapper.Map<Domain.Models.Client>(updatedClient);

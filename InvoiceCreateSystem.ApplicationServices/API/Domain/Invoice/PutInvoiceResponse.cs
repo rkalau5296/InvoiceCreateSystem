@@ -1,6 +1,6 @@
 ﻿namespace InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice
 {
-    using InvoiceCreateSystem.DataAccess.Entities;
+    using InvoiceCreateSystem.ApplicationServices.API.Domain.Models;
     public class PutInvoiceResponse : ResponseBase<Invoice>
     {
     }

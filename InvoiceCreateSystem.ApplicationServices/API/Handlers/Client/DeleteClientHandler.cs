@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
-using InvoiceCreateSystem.DataAccess;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;

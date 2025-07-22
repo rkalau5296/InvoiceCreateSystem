@@ -1,6 +1,5 @@
 ﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Address;
 
-using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Address;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Commands;

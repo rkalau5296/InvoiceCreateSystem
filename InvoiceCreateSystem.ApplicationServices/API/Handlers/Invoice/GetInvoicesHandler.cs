@@ -1,33 +1,26 @@
-﻿using AutoMapper;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice;
+
+using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
+public class GetInvoicesHandler(IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<GetInvoicesRequest, GetInvoicesResponse>
 {
-    public class GetInvoicesHandler : IRequestHandler<GetInvoicesRequest, GetInvoicesResponse>
+    private readonly IQueryExecutor queryExecutor = queryExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<GetInvoicesResponse> Handle(GetInvoicesRequest request, CancellationToken cancellationToken)
     {
-        private readonly IQueryExecutor queryExecutor;
-        private readonly IMapper mapper;
+        GetInvoicesQuery query = new();
+        List<DataAccess.Entities.Invoice> invoice = await this.queryExecutor.Execute(query);
+        IEnumerable<Domain.Models.Invoice> mappedInvoice = this.mapper.Map<List<Domain.Models.Invoice>>(invoice);
 
-        public GetInvoicesHandler(IQueryExecutor queryExecutor, IMapper mapper)
+        GetInvoicesResponse response = new()
         {
-            this.queryExecutor = queryExecutor;
-            this.mapper = mapper;
-        }
-        public async Task<GetInvoicesResponse> Handle(GetInvoicesRequest request, CancellationToken cancellationToken)
-        {
-            GetInvoicesQuery query = new();
-            List<DataAccess.Entities.Invoice> invoice = await this.queryExecutor.Execute(query);
-            IEnumerable<Domain.Models.Invoice> mappedInvoice = this.mapper.Map<List<Domain.Models.Invoice>>(invoice);
+            Data = [.. mappedInvoice],
+        };
 
-            GetInvoicesResponse response = new()
-            {
-                Data = mappedInvoice.ToList(),
-            };
-
-            return response;
-        }
+        return response;
     }
 }

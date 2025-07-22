@@ -1,24 +1,27 @@
-﻿using InvoiceCreateSystem.DataAccess;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
+using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
+using InvoiceCreateSystem.DataAccess.Entities;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice
+public class PostInvoiceHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PostInvoiceRequest, PostInvoiceResponse>
 {
-    using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
-    using InvoiceCreateSystem.DataAccess.Entities;
-    public class PostInvoiceHandler : IRequestHandler<PostInvoiceRequest, PostInvoiceResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;   
+
+    public async Task<PostInvoiceResponse> Handle(PostInvoiceRequest request, CancellationToken cancellationToken)
     {
-
-        private readonly IRepository<Invoice> invoiceRepository;
-
-        public PostInvoiceHandler(IRepository<Invoice> invoiceRepository)
+        var invoice = this.mapper.Map<Invoice>(request);
+        var command = new PostInvoiceCommand() { Parametr = invoice };
+        var invoiceFromDb = await commandExecutor.Execute(command);
+        return new PostInvoiceResponse()
         {
-            this.invoiceRepository = invoiceRepository;
-        }
-
-        public async Task<PostInvoiceResponse> Handle(PostInvoiceRequest request, CancellationToken cancellationToken)
-        {
-            await invoiceRepository.Insert(request.invoice);
-            return new PostInvoiceResponse();
-        }
+            Data = this.mapper.Map<Domain.Models.Invoice>(invoiceFromDb)
+        };
     }
 }
