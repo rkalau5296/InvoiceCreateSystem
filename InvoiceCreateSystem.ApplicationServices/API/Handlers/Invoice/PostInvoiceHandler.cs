@@ -1,9 +1,7 @@
 ﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Invoice;
 
 using AutoMapper;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Client;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
-using InvoiceCreateSystem.DataAccess;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using InvoiceCreateSystem.DataAccess.Entities;

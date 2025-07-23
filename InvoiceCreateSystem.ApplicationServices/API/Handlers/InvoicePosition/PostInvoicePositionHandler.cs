@@ -1,24 +1,27 @@
-﻿using InvoiceCreateSystem.DataAccess;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
+using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
+using InvoiceCreateSystem.DataAccess.Entities;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition
+public class PostInvoicePositionHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PostInvoicePositionRequest, PostInvoicePositionResponse>
 {
-    using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
-    using InvoiceCreateSystem.DataAccess.Entities;
-    public class PostInvoicePositionHandler : IRequestHandler<PostInvoicePositionRequest, PostInvoicePositionResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;    
+
+    public async Task<PostInvoicePositionResponse> Handle(PostInvoicePositionRequest request, CancellationToken cancellationToken)
     {
-
-        private readonly IRepository<InvoicePosition> invoicePositionRepository;
-
-        public PostInvoicePositionHandler(IRepository<InvoicePosition> invoicePositionRepository)
+        var invoicePosition = this.mapper.Map<InvoicePosition>(request);
+        var command = new PostInvoicePositionCommand() { Parametr = invoicePosition };
+        var invoiceFromDb = await commandExecutor.Execute(command);
+        return new PostInvoicePositionResponse()
         {
-            this.invoicePositionRepository = invoicePositionRepository;
-        }
-
-        public async Task<PostInvoicePositionResponse> Handle(PostInvoicePositionRequest request, CancellationToken cancellationToken)
-        {
-            await invoicePositionRepository.Insert(request.invoicePosition);
-            return new PostInvoicePositionResponse();
-        }
+            Data = this.mapper.Map<Domain.Models.InvoicePosition>(invoiceFromDb)
+        };
     }
 }

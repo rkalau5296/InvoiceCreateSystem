@@ -1,11 +1,9 @@
-﻿using MediatR;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition
+using InvoiceCreateSystem.DataAccess.Entities;
+using MediatR;
+public class PutInvoicePositionRequest(int id, InvoicePosition invoicePosition) : IRequest<PutInvoicePositionResponse>
 {
-    using InvoiceCreateSystem.DataAccess.Entities;
-    public class PutInvoicePositionRequest(int id, InvoicePosition invoicePosition) : IRequest<PutInvoicePositionResponse>
-    {
-        public InvoicePosition invoicePosition { get; } = invoicePosition;
-        public int Id { get; set; } = id;
-    }
+    public InvoicePosition invoicePosition { get; } = invoicePosition;
+    public int Id { get; set; } = id;
 }

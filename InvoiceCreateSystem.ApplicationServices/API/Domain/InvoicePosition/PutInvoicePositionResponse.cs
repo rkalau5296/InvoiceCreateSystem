@@ -1,6 +1,6 @@
 ﻿namespace InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition
 {
-    using InvoiceCreateSystem.DataAccess.Entities;
+    using Domain.Models;
     public class PutInvoicePositionResponse : ResponseBase<InvoicePosition>
     {
     }

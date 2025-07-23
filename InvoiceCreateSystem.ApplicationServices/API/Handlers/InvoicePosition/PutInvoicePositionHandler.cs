@@ -1,28 +1,29 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
+﻿using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Invoice;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.InvoicePosition
 {
-    public class PutInvoicePositionHandler : IRequestHandler<PutInvoicePositionRequest, PutInvoicePositionResponse>
+    public class PutInvoicePositionHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PutInvoicePositionRequest, PutInvoicePositionResponse>
     {
-        private readonly IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository;
-
-        public PutInvoicePositionHandler(IRepository<DataAccess.Entities.InvoicePosition> invoicePositionRepository)
-        {
-            this.invoicePositionRepository = invoicePositionRepository;
-        }
-
+        private readonly ICommandExecutor commandExecutor = commandExecutor;
+        private readonly IMapper mapper = mapper;
         public async Task<PutInvoicePositionResponse> Handle(PutInvoicePositionRequest request, CancellationToken cancellationToken)
         {
-            DataAccess.Entities.InvoicePosition invoicePosition = await this.invoicePositionRepository.GetById(request.Id);
+            var invoicePosition = mapper.Map<DataAccess.Entities.InvoicePosition>(request.invoicePosition);
 
-            invoicePosition.Lp = request.invoicePosition.Lp;
-            invoicePosition.Value = request.invoicePosition.Value;
-            invoicePosition.Quantity = request.invoicePosition.Quantity;           
+            invoicePosition.Id = request.Id;
 
-            await invoicePositionRepository.Update(invoicePosition);
-            return new PutInvoicePositionResponse();
+            var command = new PutInvoicePositionCommand { Parametr = invoicePosition };
+            var updatedInvoicePosition = await commandExecutor.Execute(command);
+
+            var domainInvoicePosition = mapper.Map<Domain.Models.InvoicePosition>(updatedInvoicePosition);
+
+            return new PutInvoicePositionResponse { Data = domainInvoicePosition };
         }
     }
 }
