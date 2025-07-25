@@ -18,10 +18,10 @@ public class PostInvoicePositionHandler(ICommandExecutor commandExecutor, IMappe
     {
         var invoicePosition = this.mapper.Map<InvoicePosition>(request);
         var command = new PostInvoicePositionCommand() { Parametr = invoicePosition };
-        var invoiceFromDb = await commandExecutor.Execute(command);
+        var invoicePositionFromDb = await commandExecutor.Execute(command);
         return new PostInvoicePositionResponse()
         {
-            Data = this.mapper.Map<Domain.Models.InvoicePosition>(invoiceFromDb)
+            Data = this.mapper.Map<Domain.Models.InvoicePosition>(invoicePositionFromDb)
         };
     }
 }

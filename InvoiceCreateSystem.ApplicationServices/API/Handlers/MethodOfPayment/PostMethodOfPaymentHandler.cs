@@ -18,10 +18,10 @@ public class PostMethodOfPaymentHandler(ICommandExecutor commandExecutor, IMappe
     {
         var methodOfPayment = this.mapper.Map<MethodOfPayment>(request);
         var command = new PostMethodOfPaymentCommand() { Parametr = methodOfPayment };
-        var invoiceFromDb = await commandExecutor.Execute(command);
+        var methodOfPaymentFromDb = await commandExecutor.Execute(command);
         return new PostMethodOfPaymentResponse()
         {
-            Data = this.mapper.Map<Domain.Models.MethodOfPayment>(invoiceFromDb)
+            Data = this.mapper.Map<Domain.Models.MethodOfPayment>(methodOfPaymentFromDb)
         };
     }
 }

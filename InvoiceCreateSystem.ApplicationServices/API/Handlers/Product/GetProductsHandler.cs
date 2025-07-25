@@ -1,21 +1,15 @@
-﻿using AutoMapper;
-using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
-using InvoiceCreateSystem.DataAccess.CQRS;
-using InvoiceCreateSystem.DataAccess.CQRS.Queries;
-using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
 {
-    public class GetProductsHandler : IRequestHandler<GetProductsRequest, GetProductsResponse>
+    using AutoMapper;
+    using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
+    using InvoiceCreateSystem.DataAccess.CQRS;
+    using InvoiceCreateSystem.DataAccess.CQRS.Queries;
+    using MediatR;
+    public class GetProductsHandler(IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<GetProductsRequest, GetProductsResponse>
     {
-        private readonly IQueryExecutor queryExecutor;
-        private readonly IMapper mapper;
+        private readonly IQueryExecutor queryExecutor = queryExecutor;
+        private readonly IMapper mapper = mapper;
 
-        public GetProductsHandler(IQueryExecutor queryExecutor, IMapper mapper)
-        {
-            this.queryExecutor = queryExecutor;
-            this.mapper = mapper;
-        }
         public async Task<GetProductsResponse> Handle(GetProductsRequest request, CancellationToken cancellationToken)
         {
             GetProductsQuery query = new();
@@ -24,7 +18,7 @@ namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
 
             GetProductsResponse response = new()
             {
-                Data = mappedProduct.ToList(),
+                Data = [.. mappedProduct],
             };
 
             return response;

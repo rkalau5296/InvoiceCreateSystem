@@ -1,22 +1,22 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product;
+
+using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
 
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.Product
+public class DeleteProductHandler(ICommandExecutor commandExecutor) : IRequestHandler<DeleteProductRequest, DeleteProductResponse>
 {
-    public class DeleteProductHandler : IRequestHandler<DeleteProductRequest, DeleteProductResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+
+    public async Task<DeleteProductResponse> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.Product> productRepository;
+        var product = new DataAccess.Entities.Product { Id = request.Id };
 
-        public DeleteProductHandler(IRepository<DataAccess.Entities.Product> productRepository)
-        {
-            this.productRepository = productRepository;
-        }
-
-        public async Task<DeleteProductResponse> Handle(DeleteProductRequest request, CancellationToken cancellationToken)
-        {
-            await productRepository.Delete(request.Id);
-            return new DeleteProductResponse();
-        }
+        var command = new DeleteProductCommand { Parametr = product };
+        await commandExecutor.Execute(command);
+        return new DeleteProductResponse();
     }
 }
