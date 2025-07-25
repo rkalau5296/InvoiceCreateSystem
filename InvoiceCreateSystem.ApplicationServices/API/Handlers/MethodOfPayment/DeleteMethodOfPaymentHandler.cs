@@ -1,21 +1,22 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
+﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
 
 namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.MethodOfPayment
 {
-    public class DeleteMethodOfPaymentHandler : IRequestHandler<DeleteMethodOfPaymentRequest, DeleteMethodOfPaymentResponse>
+    public class DeleteMethodOfPaymentHandler(ICommandExecutor commandExecutor) : IRequestHandler<DeleteMethodOfPaymentRequest, DeleteMethodOfPaymentResponse>
     {
-        private readonly IRepository<DataAccess.Entities.MethodOfPayment> methodOfPaymentRepository;
-
-        public DeleteMethodOfPaymentHandler(IRepository<DataAccess.Entities.MethodOfPayment> methodOfPaymentRepository)
-        {
-            this.methodOfPaymentRepository = methodOfPaymentRepository;
-        }
+        private readonly ICommandExecutor commandExecutor = commandExecutor;        
 
         public async Task<DeleteMethodOfPaymentResponse> Handle(DeleteMethodOfPaymentRequest request, CancellationToken cancellationToken)
         {
-            await methodOfPaymentRepository.Delete(request.Id);
+            var methodOfPayment = new DataAccess.Entities.MethodOfPayment { Id = request.Id };
+
+            var command = new DeleteMethodOfPaymentCommand { Parametr = methodOfPayment };
+            await commandExecutor.Execute(command);
             return new DeleteMethodOfPaymentResponse();
         }
     }

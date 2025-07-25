@@ -1,27 +1,28 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.MethodOfPayment;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.InvoicePosition;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.MethodOfPayment
+public class PutMethodOfPaymentHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PutMethodOfPaymentRequest, PutMethodOfPaymentResponse>
 {
-    public class PutMethodOfPaymentHandler : IRequestHandler<PutMethodOfPaymentRequest, PutMethodOfPaymentResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;   
+
+    public async Task<PutMethodOfPaymentResponse> Handle(PutMethodOfPaymentRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.MethodOfPayment> methodOfPaymentRepository;
+        var methodOfPayment = mapper.Map<DataAccess.Entities.MethodOfPayment>(request.methodOfPayments);
 
-        public PutMethodOfPaymentHandler(IRepository<DataAccess.Entities.MethodOfPayment> methodOfPaymentRepository)
-        {
-            this.methodOfPaymentRepository = methodOfPaymentRepository;
-        }
+        methodOfPayment.Id = request.Id;
 
-        public async Task<PutMethodOfPaymentResponse> Handle(PutMethodOfPaymentRequest request, CancellationToken cancellationToken)
-        {
-            DataAccess.Entities.MethodOfPayment methodOfPayment = await this.methodOfPaymentRepository.GetById(request.Id);
+        var command = new PutMethodOfPaymentCommand { Parametr = methodOfPayment };
+        var updatedMethodOfPayment = await commandExecutor.Execute(command);
 
-            methodOfPayment.Name = request.methodOfPayments.Name;
-            methodOfPayment.UserId = request.methodOfPayments.UserId;                       
+        //var domainMethodOfPayment = mapper.Map<Domain.Models.MethodOfPayment>(updatedMethodOfPayment);
 
-            await methodOfPaymentRepository.Update(methodOfPayment);
-            return new PutMethodOfPaymentResponse();
-        }
+        return new PutMethodOfPaymentResponse { Data = updatedMethodOfPayment };
     }
 }

@@ -1,34 +1,27 @@
-﻿using AutoMapper;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.MethodOfPayment;
+
+using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.MethodOfPayment;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.MethodOfPayment
+public class GetMethodOfPaymentByIdHandler(IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<GetMethodOfPaymentByIdRequest, GetMethodOfPaymentByIdResponse>
 {
-    public class GetMethodOfPaymentByIdHandler : IRequestHandler<GetMethodOfPaymentByIdRequest, GetMethodOfPaymentByIdResponse>
+    private readonly IQueryExecutor queryExecutor = queryExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<GetMethodOfPaymentByIdResponse> Handle(GetMethodOfPaymentByIdRequest request, CancellationToken cancellationToken)
     {
-        private readonly IQueryExecutor queryExecutor;
-        private readonly IMapper mapper;
+        GetMethodOfPaymentByIdQuery query = new(request.Id);
+        DataAccess.Entities.MethodOfPayment methodOfPayment = await this.queryExecutor.Execute(query);
 
-        public GetMethodOfPaymentByIdHandler(IQueryExecutor queryExecutor, IMapper mapper)
+        Domain.Models.MethodOfPayment mappedMethodOfPayment = mapper.Map<Domain.Models.MethodOfPayment>(methodOfPayment);
+
+        GetMethodOfPaymentByIdResponse response = new()
         {
-            this.queryExecutor = queryExecutor;
-            this.mapper = mapper;
-        }
-        public async Task<GetMethodOfPaymentByIdResponse> Handle(GetMethodOfPaymentByIdRequest request, CancellationToken cancellationToken)
-        {
-            GetMethodOfPaymentByIdQuery query = new(request.Id);
-            DataAccess.Entities.MethodOfPayment methodOfPayment = await this.queryExecutor.Execute(query);
+            Data = mappedMethodOfPayment,
+        };
 
-            Domain.Models.MethodOfPayment mappedMethodOfPayment = mapper.Map<Domain.Models.MethodOfPayment>(methodOfPayment);
-
-            GetMethodOfPaymentByIdResponse response = new()
-            {
-                Data = mappedMethodOfPayment,
-            };
-
-            return response;
-        }
+        return response;
     }
 }
