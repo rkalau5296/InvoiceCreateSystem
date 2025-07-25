@@ -1,22 +1,21 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User;
+
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User
+public class DeleteUserHandler(ICommandExecutor commandExecutor) : IRequestHandler<DeleteUserRequest, DeleteUserResponse>
 {
-    public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, DeleteUserResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;   
+
+    public async Task<DeleteUserResponse> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.User> userRepository;
+        var user = new DataAccess.Entities.User { Id = request.Id };
 
-        public DeleteUserHandler(IRepository<DataAccess.Entities.User> userRepository)
-        {
-            this.userRepository = userRepository;
-        }
-
-        public async Task<DeleteUserResponse> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
-        {
-            await userRepository.Delete(request.Id);
-            return new DeleteUserResponse();
-        }
+        var command = new DeleteUserCommand { Parametr = user };
+        await commandExecutor.Execute(command);
+        return new DeleteUserResponse();
     }
 }

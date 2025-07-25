@@ -11,6 +11,7 @@ public class PutProductCommand : CommandBase<Product, Product>
         var existingProduct = await context.Products.FirstOrDefaultAsync(a => a.Id == Parametr.Id) ?? throw new InvalidOperationException($"Adres o Id={Parametr.Id} nie istnieje.");
 
         existingProduct.Name = Parametr.Name;
+        existingProduct.Value = Parametr.Value;
 
         await context.SaveChangesAsync();
         return existingProduct;

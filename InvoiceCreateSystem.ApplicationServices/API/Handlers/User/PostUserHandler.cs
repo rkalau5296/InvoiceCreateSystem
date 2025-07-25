@@ -1,23 +1,25 @@
-﻿using AutoMapper;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User
+public class PostUserHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PostUserRequest, PostUserResponse>
 {
-    public class PostUserHandler : IRequestHandler<PostUserRequest, PostUserResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<PostUserResponse> Handle(PostUserRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.User> userRepository;
-
-        public PostUserHandler(IRepository<DataAccess.Entities.User> userRepository, IMapper mapper)
+        var user = this.mapper.Map<DataAccess.Entities.User>(request);
+        var command = new PostUserCommand() { Parametr = user };
+        var userFromDb = await commandExecutor.Execute(command);
+        return new PostUserResponse()
         {
-            this.userRepository = userRepository;
-        }
-
-        public async Task<PostUserResponse> Handle(PostUserRequest request, CancellationToken cancellationToken)
-        {
-            await userRepository.Insert(request.user);
-            return new PostUserResponse();
-        }
+            Data = this.mapper.Map<Domain.Models.User>(userFromDb)
+        };
     }
 }

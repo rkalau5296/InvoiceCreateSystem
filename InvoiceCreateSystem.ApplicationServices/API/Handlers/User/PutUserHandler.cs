@@ -1,27 +1,28 @@
-﻿using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User;
+
+using AutoMapper;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.Product;
+using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
 using InvoiceCreateSystem.DataAccess;
+using InvoiceCreateSystem.DataAccess.CQRS;
+using InvoiceCreateSystem.DataAccess.CQRS.Commands;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User
+public class PutUserHandler(ICommandExecutor commandExecutor, IMapper mapper) : IRequestHandler<PutUserRequest, PutUserResponse>
 {
-    public class PutUserHandler : IRequestHandler<PutUserRequest, PutUserResponse>
+    private readonly ICommandExecutor commandExecutor = commandExecutor;
+    private readonly IMapper mapper = mapper;    
+
+    public async Task<PutUserResponse> Handle(PutUserRequest request, CancellationToken cancellationToken)
     {
-        private readonly IRepository<DataAccess.Entities.User> userRepository;
+        var user = mapper.Map<DataAccess.Entities.User>(request.User);
 
-        public PutUserHandler(IRepository<DataAccess.Entities.User> userRepository)
-        {
-            this.userRepository = userRepository;
-        }
+        user.Id = request.Id;
 
-        public async Task<PutUserResponse> Handle(PutUserRequest request, CancellationToken cancellationToken)
-        {
-            DataAccess.Entities.User user = await userRepository.GetById(request.Id);
-            user.Name = request.user.Name;
-            user.Email = request.user.Email;
-            user.Password = request.user.Email;
+        var command = new PutUserCommand { Parametr = user };
+        var updatedUser = await commandExecutor.Execute(command);
 
-            await userRepository.Update(user);
-            return new PutUserResponse();
-        }
+        //var domainMethodOfPayment = mapper.Map<Domain.Models.MethodOfPayment>(updatedMethodOfPayment);
+
+        return new PutUserResponse { Data = updatedUser };
     }
 }

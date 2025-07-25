@@ -1,33 +1,26 @@
-﻿using AutoMapper;
+﻿namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User;
+
+using AutoMapper;
 using InvoiceCreateSystem.ApplicationServices.API.Domain.User;
 using InvoiceCreateSystem.DataAccess.CQRS;
 using InvoiceCreateSystem.DataAccess.CQRS.Queries;
 using MediatR;
-
-namespace InvoiceCreateSystem.ApplicationServices.API.Handlers.User
+public class GetUsersHandler(IQueryExecutor queryExecutor, IMapper mapper) : IRequestHandler<GetUsersRequest, GetUsersResponse>
 {
-    public class GetUsersHandler : IRequestHandler<GetUsersRequest, GetUsersResponse>
+    private readonly IQueryExecutor queryExecutor = queryExecutor;
+    private readonly IMapper mapper = mapper;
+
+    public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
     {
-        private readonly IQueryExecutor queryExecutor;
-        private readonly IMapper mapper;
+        GetUsersQuery query = new();
+        List<DataAccess.Entities.User> users = await queryExecutor.Execute(query);
+        IEnumerable<Domain.Models.User> mappedUsers = mapper.Map<List<Domain.Models.User>>(users);
 
-        public GetUsersHandler(IQueryExecutor queryExecutor, IMapper mapper)
+        GetUsersResponse response = new()
         {
-            this.queryExecutor = queryExecutor;
-            this.mapper = mapper;
-        }
-        public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
-        {
-            GetUsersQuery query = new();
-            List<DataAccess.Entities.User> users = await queryExecutor.Execute(query);
-            IEnumerable<Domain.Models.User> mappedUsers = mapper.Map<List<Domain.Models.User>>(users);
+            Data = mappedUsers.ToList(),
+        };
 
-            GetUsersResponse response = new()
-            {
-                Data = mappedUsers.ToList(),
-            };
-
-            return response;
-        }
+        return response;
     }
 }
