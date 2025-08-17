@@ -1,4 +1,5 @@
 using InvoiceCreateSystem.ApplicationServices.API.Domain;
+using InvoiceCreateSystem.ApplicationServices.Mail;
 using InvoiceCreateSystem.ApplicationServices.Mappings;
 using InvoiceCreateSystem.DataAccess;
 using InvoiceCreateSystem.DataAccess.CQRS;
@@ -12,16 +13,28 @@ builder.Services.AddAutoMapper(typeof(ProductsProfile).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ResponseBase<>).Assembly));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddDbContext<InvoiceContext>(opt 
-    => opt.UseSqlServer(builder.Configuration.GetConnectionString("InvoiceDatabaseConnection")));
+    => opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Invoice API",
+        Version = "v1"
+    });
+});
+builder.Services.AddTransient(typeof(IEmailSender), typeof(EmailSender));
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Invoice API V1");
+        c.RoutePrefix = string.Empty;
+    });
 }
 app.UseHttpsRedirection();
 app.UseAuthorization();

@@ -25,6 +25,7 @@ namespace InvoiceCreateSystem.DataAccess.Entities
         [Display(Name = "kod pocztowy")]
         [MaxLength(255)]
         public string PostalCode { get; set; }
+        public string Email { get; set; }
         public ICollection<Client> Clients { get; set; }
     }
 }
