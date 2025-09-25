@@ -1,0 +1,38 @@
+name: ASP.NET Core CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'   # lub wersja, której używasz
+
+      - name: Restore dependencies
+        run: dotnet restore InvoiceCreateSystem/InvoiceCreateSystem.sln
+
+      - name: Build
+        run: dotnet build InvoiceCreateSystem/InvoiceCreateSystem.sln --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test InvoiceCreateSystem/InvoiceCreateSystem.sln --no-build --verbosity normal
+
+      - name: Publish app
+        run: dotnet publish InvoiceCreateSystem/ -c Release -o ./publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: aspnetcore-app
+          path: ./publish
